@@ -14,7 +14,6 @@ class Trader {
     private $targets;
     private $amount;
     private $initialAmount;
-    private $tradeFile;
     private $startTime;
     private $stopPx;
     private $openOrders;
@@ -22,7 +21,6 @@ class Trader {
 
 
     public function __construct($symbol, $side, $amount, $stopPx=null, $targets=null) {
-        $this->tradeFile = $this->strategy."_".$symbol;
         $config = include('config.php');
         $leverage = $config['leverage'];
 
@@ -375,7 +373,7 @@ class Trader {
                 }
             } else {
                 try {
-                    $candle = $bitmex->getCandles('1m', 1, $this->symbol)[0];
+                    $candle = $this->bitmex->getCandles('1m', 1, $this->symbol)[0];
                 } catch (Exception $e) {
                     $log->error("Failed retrieving ticker, sleeping few seconds", ['error'=>$e]);
                     continue;
